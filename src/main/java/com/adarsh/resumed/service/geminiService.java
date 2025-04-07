@@ -30,10 +30,11 @@ public class geminiService {
     public void init() {
         System.out.println("Gemini API Key loaded: " + apiKey);
         url = apiUrl + "?key=" + apiKey;
+        System.out.println("Gemini API Key loaded: " + url);
     }
 
     public String getSuggestion(String promptText) {
-        //String url = apiUrl + "?key=" + apiKey;
+        String url = apiUrl + "?key=" + apiKey;
 
         System.out.println(url);
 
