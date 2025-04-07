@@ -13,8 +13,9 @@ import java.util.Map;
 
 @Service
 public class geminiService {
-    
-    private String apiKey = "AIzaSyBIZ0bPJhf8UL1bSpEoebyBKwc7DeqFSdc";
+
+    @Value("${gemini.api.key}")
+    private String apiKey;
 
     @Value("${gemini.api.url}")
     private String apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
