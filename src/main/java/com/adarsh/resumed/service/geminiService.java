@@ -20,7 +20,7 @@ public class geminiService {
     private String apiKey;
 
     @Value("${gemini.api.url}")
-    private String apiUrl;
+    private String apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
 
     private String url;
 
