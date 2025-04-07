@@ -20,23 +20,16 @@ public class geminiService {
     private String apiKey;
 
     @Value("${gemini.api.url}")
-    private String apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
+    private String apiUrl;
 
     private String url;
 
     private static final RestTemplate restTemplate = new RestTemplate();
 
-    @PostConstruct
-    public void init() {
-        System.out.println("Gemini API Key loaded: " + apiKey);
-        url = apiUrl + "?key=" + apiKey;
-        System.out.println("Gemini API Key loaded full url: " + url);
-    }
-
     public String getSuggestion(String promptText) {
-        //String url = apiUrl + "?key=" + apiKey;
+        String url = apiUrl + "?key=" + apiKey;
 
-        System.out.println(url);
+        System.out.println("Calling URL:" + url);
 
         Map<String, Object> request = Map.of(
                 "contents", List.of(Map.of(
