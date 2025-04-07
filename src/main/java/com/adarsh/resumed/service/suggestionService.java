@@ -13,7 +13,8 @@ import java.util.Objects;
 @Service
 public class suggestionService {
 
-    private geminiService geminiService = new geminiService();
+    @Autowired
+    private geminiService geminiService;
 
     private String createPrompt(String jobDescription, String resume) {
         String prompt = "Consider yourself as ATS.\nBelow is my resume:\n" + resume + "\nBelow is the Job Description:\n" + jobDescription + "\n suggest what changes I need to make per section.";
