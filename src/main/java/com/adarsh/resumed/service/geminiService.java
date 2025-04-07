@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Service
 public class geminiService {
-    @Value("${gemini.api.key}")
+    
     private String apiKey = "AIzaSyBIZ0bPJhf8UL1bSpEoebyBKwc7DeqFSdc";
 
     @Value("${gemini.api.url}")
