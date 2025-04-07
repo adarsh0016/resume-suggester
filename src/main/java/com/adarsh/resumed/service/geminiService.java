@@ -34,7 +34,7 @@ public class geminiService {
     }
 
     public String getSuggestion(String promptText) {
-        String url = apiUrl + "?key=" + apiKey;
+        //String url = apiUrl + "?key=" + apiKey;
 
         System.out.println(url);
 
