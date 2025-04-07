@@ -22,6 +22,11 @@ public class geminiService {
 
     private static final RestTemplate restTemplate = new RestTemplate();
 
+    @PostConstruct
+    public void init() {
+        System.out.println("Gemini API Key loaded: " + apiKey);
+    }
+
     public String getSuggestion(String promptText) {
         String url = apiUrl + "?key=" + apiKey;
 
