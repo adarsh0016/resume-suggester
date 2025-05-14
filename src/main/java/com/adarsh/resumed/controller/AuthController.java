@@ -1,9 +1,11 @@
 package com.adarsh.resumed.controller;
 
 import com.adarsh.resumed.DTO.AuthRequest;
+import com.adarsh.resumed.DTO.Response;
 import com.adarsh.resumed.service.CustomUserDetailsService;
 import com.adarsh.resumed.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,7 +26,7 @@ public class AuthController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public String login(@RequestBody AuthRequest request) {
+    public ResponseEntity<Response> login(@RequestBody AuthRequest request) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -36,6 +38,8 @@ public class AuthController {
         }
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
-        return jwtUtil.generateToken(userDetails.getUsername());
+        String token = jwtUtil.generateToken(userDetails.getUsername());
+        Response response = new Response(token, "success");
+        return ResponseEntity.ok(response);
     }
 }
