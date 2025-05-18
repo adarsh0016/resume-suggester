@@ -1,6 +1,9 @@
 package com.adarsh.resumed.controller;
 
 import com.adarsh.resumed.DTO.Response;
+import com.adarsh.resumed.DTO.Resume;
+import com.adarsh.resumed.service.ResumeService;
+import com.adarsh.resumed.service.S3Service;
 import com.adarsh.resumed.service.suggestionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Map;
 
 @RestController
@@ -21,21 +26,59 @@ public class suggestController {
     @Autowired
     private suggestionService suggestionService;
 
+    @Autowired
+    private ResumeService resumeService;
+
+    @GetMapping("/resume")
+    public ResponseEntity<Response> resume() {
+        String resumeName = resumeService.getResume();
+        if(resumeName != null) {
+            Response response = new Response(resumeName, "success");
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/suggestV2")
+    public ResponseEntity<Response> suggestV2(@RequestPart("data") String jobDescription, @RequestParam("file_name") String resumeFileName) throws IOException {
+        log.info("Received Request V2");
+
+        byte[] resume = resumeService.download(resumeFileName);
+
+        Path tempFile = Files.createTempFile("s3-", resumeFileName);
+        Files.write(tempFile, resume);
+
+        String result = suggestionService.getResult(jobDescription, tempFile);
+        Response response = new Response(result, "success");
+
+        log.info("Response Sent V2");
+
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/suggest")
     public ResponseEntity<Response> suggest(@RequestPart("file") MultipartFile file,
-                                              @RequestPart("data") String reqBody) throws IOException {
-        String jobDescription = reqBody;
+                                              @RequestPart("data") String jobDescription) throws IOException {
 
-        System.out.println("JD: \n" + jobDescription);
-        System.out.println("resume: \n" + file.getOriginalFilename());
+        log.info("Received Request");
 
         if (!file.isEmpty()) {
-            String result = suggestionService.getResult(jobDescription, file);
+            Path tempFile = Files.createTempFile("upload-", file.getOriginalFilename());
+            file.transferTo(tempFile);
+            resumeService.upload(file.getOriginalFilename(), tempFile);
+
+            String result = suggestionService.getResult(jobDescription, tempFile);
             Response response = new Response(result, "success");
+
+            log.info("Response Sent");
+
             return ResponseEntity.ok(response);
         }
 
-        return (ResponseEntity<Response>) ResponseEntity.badRequest();
+        log.info("Response Sent");
+
+        return ResponseEntity.badRequest().build();
         
     }
 }

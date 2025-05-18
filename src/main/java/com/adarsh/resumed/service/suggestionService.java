@@ -9,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 
 @Service
@@ -23,16 +25,18 @@ public class suggestionService {
         return prompt;
     }
 
-    public String getResult(String jobDescription, MultipartFile resume) throws IOException {
-        String fileText;
 
-        if (Objects.requireNonNull(resume.getOriginalFilename()).endsWith(".pdf")) {
-            PDDocument document = PDDocument.load(resume.getInputStream());
-            PDFTextStripper stripper = new PDFTextStripper();
-            fileText = stripper.getText(document);
-            document.close();
+    public String getResult(String jobDescription, Path resumePath) throws IOException {
+        String fileText;
+        String fileName = resumePath.getFileName().toString();
+
+        if (fileName.endsWith(".pdf")) {
+            try (PDDocument document = PDDocument.load(Files.newInputStream(resumePath))) {
+                PDFTextStripper stripper = new PDFTextStripper();
+                fileText = stripper.getText(document);
+            }
         } else {
-            fileText = new String(resume.getBytes());
+            fileText = Files.readString(resumePath);
         }
 
         if (fileText.length() > 8000) {
