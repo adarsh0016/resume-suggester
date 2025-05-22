@@ -15,7 +15,7 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOriginPatterns(List.of("https://adarsh0016.github.io")); // Or "http://localhost:3000" etc.
+        config.setAllowedOriginPatterns(List.of("https://adarsh0016.github.io", "http://localhost:3000")); // Or "http://localhost:3000" etc.
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);

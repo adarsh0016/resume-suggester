@@ -2,6 +2,7 @@ package com.adarsh.resumed.controller;
 
 import com.adarsh.resumed.DTO.Response;
 import com.adarsh.resumed.DTO.Resume;
+import com.adarsh.resumed.DTO.SuggestionV2Request;
 import com.adarsh.resumed.service.ResumeService;
 import com.adarsh.resumed.service.S3Service;
 import com.adarsh.resumed.service.suggestionService;
@@ -41,15 +42,15 @@ public class suggestController {
     }
 
     @PostMapping("/suggestV2")
-    public ResponseEntity<Response> suggestV2(@RequestPart("data") String jobDescription, @RequestParam("file_name") String resumeFileName) throws IOException {
+    public ResponseEntity<Response> suggestV2(@RequestBody SuggestionV2Request request) throws IOException {
         log.info("Received Request V2");
 
-        byte[] resume = resumeService.download(resumeFileName);
+        byte[] resume = resumeService.download(request.getResumeFileName());
 
-        Path tempFile = Files.createTempFile("s3-", resumeFileName);
+        Path tempFile = Files.createTempFile("s3-", request.getResumeFileName());
         Files.write(tempFile, resume);
 
-        String result = suggestionService.getResult(jobDescription, tempFile);
+        String result = suggestionService.getResult(request.getJobDescription(), tempFile);
         Response response = new Response(result, "success");
 
         log.info("Response Sent V2");
