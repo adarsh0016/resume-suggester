@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.adarsh</groupId>
 	<artifactId>resumed</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>resumed</name>
 	<description>suggests changes to your resume based on the job description</description>
 	<url/>
