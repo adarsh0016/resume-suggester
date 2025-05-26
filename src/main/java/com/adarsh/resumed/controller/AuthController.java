@@ -2,8 +2,11 @@ package com.adarsh.resumed.controller;
 
 import com.adarsh.resumed.DTO.AuthRequest;
 import com.adarsh.resumed.DTO.Response;
+import com.adarsh.resumed.exception.InvalidCredentialsException;
 import com.adarsh.resumed.service.CustomUserDetailsService;
 import com.adarsh.resumed.utils.JwtUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class AuthController {
 
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -34,7 +38,8 @@ public class AuthController {
                     )
             );
         } catch (AuthenticationException e) {
-            throw new RuntimeException("Invalid credentials");
+            log.error("Invalid Credentials");
+            throw new InvalidCredentialsException("Invalid Credentials");
         }
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());

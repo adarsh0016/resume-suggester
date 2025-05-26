@@ -1,6 +1,7 @@
 package com.adarsh.resumed.service;
 
 import com.adarsh.resumed.DTO.Users;
+import com.adarsh.resumed.exception.UsernameTakenException;
 import com.adarsh.resumed.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +20,7 @@ public class UserService {
 
     public Users register(String username, String password) {
         if(userRepository.findByUsername(username) != null) {
-            throw new RuntimeException("Username already exists");
+            throw new UsernameTakenException("Username already exists");
         }
 
         Users user = new Users();
