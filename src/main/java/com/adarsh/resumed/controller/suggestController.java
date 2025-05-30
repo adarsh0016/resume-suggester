@@ -77,7 +77,7 @@ public class suggestController {
             return ResponseEntity.ok(response);
         }
 
-        log.info("Response Sent");
+        log.error("File is Empty");
 
         return ResponseEntity.badRequest().build();
         

@@ -29,4 +29,13 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(ResumeNotUploadedException.class)
+    public ResponseEntity<Map<String, Object>> handleResumeNotUploaded(ResumeNotUploadedException ex) {
+        Map<String, Object> errorDetails = new HashMap<>();
+        errorDetails.put("message", ex.getMessage());
+        errorDetails.put("status", HttpStatus.BAD_REQUEST.value());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
 }
