@@ -32,6 +32,18 @@ public abstract class AbstractResumeUploader {
 
     private static final RestTemplate restTemplate = new RestTemplate();
 
+    public String getResume() {
+        String username = getLoggedInUsername();
+        Users user = userRepository.findByUsername(username);
+        Optional<Resume> OptionalResume = resumeRepository.findByUserId(user.getId());
+        if(OptionalResume.isPresent()) {
+            Resume resume = OptionalResume.get();
+
+            return resume.getFileName();
+        }
+        return null;
+    }
+
     public final void upload(String username, MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();
         String uploadFileName = username + "_" + originalFilename;

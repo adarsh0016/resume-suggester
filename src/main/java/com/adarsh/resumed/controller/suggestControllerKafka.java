@@ -27,6 +27,17 @@ public class suggestControllerKafka {
     @Autowired
     private ResumeServiceKafka resumeService;
 
+    @GetMapping("/resume")
+    public ResponseEntity<Response> resume() {
+        String resumeName = resumeService.getResume();
+        if(resumeName != null) {
+            Response response = new Response(resumeName, "success");
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PostMapping("/suggest")
     public ResponseEntity<Response> suggest(@RequestPart("file") MultipartFile file,
                                             @RequestPart("data") String jobDescription) throws IOException {
