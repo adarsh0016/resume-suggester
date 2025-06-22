@@ -1,7 +1,7 @@
-package com.adarsh.resumed.controller;
+package com.adarsh.resumed.deprecated.controller;
 
 import com.adarsh.resumed.DTO.Response;
-import com.adarsh.resumed.service.ResumeServiceV2;
+import com.adarsh.resumed.deprecated.service.ResumeServiceV2;
 import com.adarsh.resumed.service.suggestionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

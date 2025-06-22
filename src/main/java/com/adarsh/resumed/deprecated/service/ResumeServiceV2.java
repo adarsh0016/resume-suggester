@@ -1,7 +1,8 @@
-package com.adarsh.resumed.service;
+package com.adarsh.resumed.deprecated.service;
 
 import com.adarsh.resumed.DTO.ResumedS3UploadRequest;
 import com.adarsh.resumed.exception.ResumeNotUploadedException;
+import com.adarsh.resumed.service.AbstractResumeUploader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
