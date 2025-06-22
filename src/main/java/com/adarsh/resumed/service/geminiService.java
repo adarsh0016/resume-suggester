@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class geminiService {
+public class geminiService implements LLMService {
 
     @Value("${gemini.api.key}")
     private String apiKey;
@@ -22,10 +22,9 @@ public class geminiService {
     @Value("${gemini.api.url}")
     private String apiUrl;
 
-    private String url;
-
     private static final RestTemplate restTemplate = new RestTemplate();
 
+    @Override
     public String getSuggestion(String promptText) {
         String url = apiUrl + "?key=" + apiKey;
 

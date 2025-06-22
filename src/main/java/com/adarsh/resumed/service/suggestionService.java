@@ -17,7 +17,7 @@ import java.util.Objects;
 public class suggestionService {
 
     @Autowired
-    private geminiService geminiService;
+    private geminiService LLMService;
 
     private String createPrompt(String jobDescription, String resume) {
         String prompt = "Consider yourself as ATS.\nBelow is my resume:\n" + resume + "\nBelow is the Job Description:\n" + jobDescription + "\n suggest what changes I need to make per section.";
@@ -45,6 +45,6 @@ public class suggestionService {
 
         String prompt = createPrompt(jobDescription, fileText);
 
-        return geminiService.getSuggestion(prompt);
+        return LLMService.getSuggestion(prompt);
     }
 }
